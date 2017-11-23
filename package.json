@@ -6,7 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "autoprefixer": "autoprefixer-cli -o main.prefixed.css style.css",
-	"html-checker": "nu-html-checker index.html"
+    "html-checker": "nu-html-checker index.html",
+   
+    "watch": "npm run watch:browser-sync",
+    "watch:browser-sync": "node_modules/.bin/browser-sync start --server --files css/*.css *.html",
+    "build": "npm run build:clean",
+    "build:clean": "rm -rf libs"
   },
   "repository": {
     "type": "git",
@@ -21,10 +26,12 @@
   "homepage": "https://github.com/wojjar/learning-node#readme",
   "dependencies": {
     "browser-sync": "^2.18.13",
-    "nu-html-checker": "^0.1.0"
+    "nu-html-checker": "^0.1.0",
+    "onchange": "^3.2.1",
+    "parallelshell": "^3.0.2",
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "autoprefixer-cli": "^1.0.0"
   }
 }
-
