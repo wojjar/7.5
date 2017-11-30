@@ -4,14 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "autoprefixer": "autoprefixer-cli -o main.prefixed.css style.css",
-    "html-checker": "nu-html-checker index.html",
-   
-    "watch": "npm run watch:browser-sync",
-    "watch:browser-sync": "node_modules/.bin/browser-sync start --server --files css/*.css *.html",
-    "build": "npm run build:clean",
-    "build:clean": "rm -rf libs"
+    "test": "npm run test:html",
+    "test:html": "glob-run nu-html-checker *.html",
+    
+    "build": "npm run build:clean && npm run build:sass && npm run build:autoprefixer && npm run test",
+    "build:cssdev": "npm run build:sassdev && npm run build:autoprefixer",
+    
+    "build:clean": "rimraf css/*",
+    "build:sass": "sass --sourcemap=none --update sass:css",
+    "build:sassdev": "sass --update sass:css",
+    "build:autoprefixer": "autoprefixer-cli css/style.css",
+
+    "watch": "npm run build && parallelshell \"npm run watch:sassprefixer\" \"npm run watch:browsersync\" ",
+
+    "watch:sassprefixer": "onchange sass/*.scss -- npm run build:cssdev",
+    "watch:browsersync": "browser-sync start --server --files \"css/*.css\" \"*.html\""
   },
   "repository": {
     "type": "git",
